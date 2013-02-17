@@ -1,9 +1,14 @@
 package de.EliteJan96.Main;
 
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -16,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ListenerClass extends JavaPlugin implements Listener {
 	
 	private Plugin plugin;
+	public static HashMap <String, Integer> antix = new HashMap<String, Integer>();
 	
 	@EventHandler
 	public void onPlayerLogin(PlayerLoginEvent event) {
@@ -54,6 +60,23 @@ public class ListenerClass extends JavaPlugin implements Listener {
 			event.setCancelled(true);
 		}
 		event.setLeaveMessage(ChatColor.YELLOW + event.getPlayer().getName() + " hat das Spiel verlassen.");
+	}
+	
+	@EventHandler
+	public void onPlayerBuild(BlockBreakEvent event) {
+		if (event.getBlock().getType() == Material.DIAMOND_ORE || event.getBlock().getType() == Material.IRON_ORE) {
+			PluginDescriptionFile desc = this.getDescription();
+			if (antix.containsKey(event.getPlayer().getName())) {
+				antix.put(event.getPlayer().getName(), antix.get(event.getPlayer().getName()) +1);
+			} else {
+				antix.put(event.getPlayer().getName(), 1);
+			}
+			for (Player player : Bukkit.getOnlinePlayers()) {
+				if (player.hasPermission(desc.getName() + ".antixray")) {
+					player.sendMessage(ChatColor.GOLD + "[AntiX] " + ChatColor.YELLOW + event.getPlayer().getName() + " hat " + event.getBlock().getType().toString() + " abgebaut. Er ist schon " + antix.get(event.getPlayer().getName()) + " mal aufgefallen.");
+				}
+			}
+		}
 	}
 	
 }

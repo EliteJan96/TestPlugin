@@ -69,11 +69,16 @@ public class Main extends JavaPlugin {
 					} else if (args.length == 1) {
 						String target = args[0];
 						if (Bukkit.getPlayer(target) != null) {
-							this.getConfig().addDefault("Bans." + target + ".status", true);
+							if (this.getConfig().contains("Bans." + target + ".status")) {
+								this.getConfig().set("Bans." + target + ".status", true);
+							} else {
+								this.getConfig().addDefault("Bans." + target + ".status", true);
+							}
 							Bukkit.getPlayer(target).kickPlayer(ChatColor.DARK_RED + "Du wurdest permanent gebannt.");
 						} else {
 							this.getConfig().addDefault("Bans." + target + ".status", true);
 						}
+						p.sendMessage(ChatColor.RED + "Der Spieler wurde gebannt.");
 					} else if (args.length > 1) {
 						String target = args[0];
 						if (Bukkit.getPlayer(target) != null) {
@@ -84,8 +89,13 @@ public class Main extends JavaPlugin {
 								sb.append(args[i]);
 							}
 							String nachricht = sb.toString();
-							this.getConfig().addDefault("Bans." + target + ".status", true);
-							this.getConfig().addDefault("Bans." + target + ".message", nachricht);
+							if (this.getConfig().contains("Bans." + target + ".status")) {
+								this.getConfig().set("Bans." + target + ".status", true);
+								this.getConfig().set("Bans." + target + ".message", nachricht);
+							} else {
+								this.getConfig().addDefault("Bans." + target + ".status", true);
+								this.getConfig().addDefault("Bans." + target + ".message", nachricht);
+							}
 							Bukkit.getPlayer(target).kickPlayer(ChatColor.DARK_RED + "Du wurdest permanent gebannt.");
 						} else {
 							StringBuilder sb = new StringBuilder();
@@ -95,9 +105,27 @@ public class Main extends JavaPlugin {
 								sb.append(args[i]);
 							}
 							String nachricht = sb.toString();
-							this.getConfig().addDefault("Bans." + target + ".status", true);
-							this.getConfig().addDefault("Bans." + target + ".message", nachricht);
+							if (this.getConfig().contains("Bans." + target + ".status")) {
+								this.getConfig().set("Bans." + target + ".status", true);
+								this.getConfig().set("Bans." + target + ".message", nachricht);
+							} else {
+								this.getConfig().addDefault("Bans." + target + ".status", true);
+								this.getConfig().addDefault("Bans." + target + ".message", nachricht);
+							}
 						}
+						p.sendMessage(ChatColor.RED + "Der Spieler wurde gebannt.");
+					}
+					
+				}
+				
+				if (cmd.getName().equalsIgnoreCase("entban")) {
+					if (args.length == 1) {
+						String target = args[0];
+						this.getConfig().addDefault("Bans." + target + ".status", false);
+						this.getConfig().set("Bans." + target + ".message", "");
+						p.sendMessage(ChatColor.GREEN + "Der Spieler wurde entbannt.");
+					} else {
+						p.sendMessage(ChatColor.RED + "Verwendung: /entban <Spieler>");
 					}
 					
 				}
