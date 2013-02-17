@@ -1,0 +1,8 @@
+name: TestPlugin
+version: 1.0
+author: EliteJan96
+main: de.EliteJan96.Main.Main
+commands:
+  heile:
+    description: Heilt (andere) Spieler.
+    usage: /heile [Spieler]
