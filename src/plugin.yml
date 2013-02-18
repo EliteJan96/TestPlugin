@@ -5,4 +5,10 @@ main: de.EliteJan96.Main.Main
 commands:
   heile:
     description: Heilt (andere) Spieler.
-    usage: /heile [Spieler]
+    usage: /<command> [Spieler]
+  tp:
+    description: Teleportiert dich.
+    usage: /<command> <Spieler>
+  team:
+    description: Teamcommand
+    usage: /<command>

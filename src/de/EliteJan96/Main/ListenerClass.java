@@ -78,5 +78,4 @@ public class ListenerClass extends JavaPlugin implements Listener {
 			}
 		}
 	}
-	
 }
