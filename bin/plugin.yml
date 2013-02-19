@@ -16,3 +16,7 @@ commands:
     description: Macht dich (un)sichtbar
     usage: /<command>
     aliases: [v, unsichtbar, sichtbar]
+  msg:
+    description: MSG-Command
+    usage: /<command <Spieler> <Nachricht>
+    aliases: [tell, t, send, schreibe, nachricht]

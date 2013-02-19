@@ -168,10 +168,10 @@ public class Main extends JavaPlugin {
 					String owner, admin;
 					owner = admin = "";
 					for (int i = 0; i < pex.getGroup("Owner").getUsers().length; i++) {
-						owner = owner + Functions.isOnline(pex.getGroup("Owner").getUsers()[i].getName()) + " " + ChatColor.DARK_AQUA + "| ";
+						owner = owner + Functions.isOnlineTeam(pex.getGroup("Owner").getUsers()[i].getName()) + " " + ChatColor.DARK_AQUA + "| ";
 					}
 					for (int i = 0; i < pex.getGroup("Admin").getUsers().length; i++) {
-						admin = admin + Functions.isOnline(pex.getGroup("Admin").getUsers()[i].getName()) + " " + ChatColor.DARK_AQUA + "| ";
+						admin = admin + Functions.isOnlineTeam(pex.getGroup("Admin").getUsers()[i].getName()) + " " + ChatColor.DARK_AQUA + "| ";
 					}
 					p.sendMessage(ChatColor.GREEN + "[]" + ChatColor.GOLD + " --> " + ChatColor.DARK_AQUA + "Team" + ChatColor.GOLD + " <-- " + ChatColor.GREEN + "[]");
 					p.sendMessage(ChatColor.DARK_RED + "Owner: " + ChatColor.RESET + owner);
@@ -196,6 +196,28 @@ public class Main extends JavaPlugin {
 					}
 				}
 				
+				if (cmd.getName().equalsIgnoreCase("msg")) {
+					if (Functions.isOnline(args[0]) == true) {
+						if (args.length > 2) {
+							PermissionManager pex = PermissionsEx.getPermissionManager();
+							if (pex.has(Bukkit.getPlayer(args[0]), desc.getName() + ".msg.admin") && !(pex.has(p, desc.getName() + ".msg.admin"))) {
+								p.sendMessage(ChatColor.DARK_RED + "Admins reagieren oft nicht auf MSGs. Bitte wende dich für Fragen an einen Supporter.");
+							}
+							StringBuilder sb = new StringBuilder();
+							for (int i = 1; i < args.length; i++) {
+								if (i != 0)
+									sb.append(' ');
+								sb.append(args[i]);
+							}
+							String nachricht = sb.toString();
+							Functions.sendMsg(p.getName(), args[0], nachricht);
+						} else {
+							p.sendMessage(ChatColor.RED + "Verwendung: /msg <Spieler> <Nachricht>");
+						}
+					} else {
+						p.sendMessage(ChatColor.RED + "Der Spieler wurde nicht gefunden.");
+					}
+				}
 				
 			} else {
 				p.sendMessage(noPerm);
@@ -293,10 +315,10 @@ public class Main extends JavaPlugin {
 				String owner, admin;
 				owner = admin = "";
 				for (int i = 0; i < pex.getGroup("Owner").getUsers().length; i++) {
-					owner = owner + Functions.isOnline(pex.getGroup("Owner").getUsers()[i].getName()) + " " + ChatColor.DARK_AQUA + "| ";
+					owner = owner + Functions.isOnlineTeam(pex.getGroup("Owner").getUsers()[i].getName()) + " " + ChatColor.DARK_AQUA + "| ";
 				}
 				for (int i = 0; i < pex.getGroup("Admin").getUsers().length; i++) {
-					admin = admin + Functions.isOnline(pex.getGroup("Admin").getUsers()[i].getName()) + " " + ChatColor.DARK_AQUA + "| ";
+					admin = admin + Functions.isOnlineTeam(pex.getGroup("Admin").getUsers()[i].getName()) + " " + ChatColor.DARK_AQUA + "| ";
 				}
 				sender.sendMessage(ChatColor.GREEN + "[]" + ChatColor.GOLD + " --> " + ChatColor.DARK_AQUA + "Team" + ChatColor.GOLD + " <-- " + ChatColor.GREEN + "[]");
 				sender.sendMessage(ChatColor.DARK_RED + "Owner: " + ChatColor.RESET + owner);
