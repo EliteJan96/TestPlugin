@@ -1,5 +1,6 @@
 package de.EliteJan96.Main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -18,6 +19,7 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 public class Main extends JavaPlugin {
 
 	public static String noPerm = ChatColor.RED + "Du hast leider keine ausreichenden Rechte um diesen Befehl auszuführen.";
+	public static List<String> vanish = new ArrayList<String>();
 	
 	@Override
 	public void onEnable() {
@@ -174,6 +176,24 @@ public class Main extends JavaPlugin {
 					p.sendMessage(ChatColor.GREEN + "[]" + ChatColor.GOLD + " --> " + ChatColor.DARK_AQUA + "Team" + ChatColor.GOLD + " <-- " + ChatColor.GREEN + "[]");
 					p.sendMessage(ChatColor.DARK_RED + "Owner: " + ChatColor.RESET + owner);
 					p.sendMessage(ChatColor.RED + "Admins: " + ChatColor.RESET + admin);
+				}
+				
+				if (cmd.getName().equalsIgnoreCase("vanish")) {
+					if (vanish.contains(p.getName())) {
+						for (Player player : Bukkit.getOnlinePlayers()) {
+							if (!player.hasPermission(desc.getName() + ".vanish.see")) {
+								player.showPlayer(p);
+							}
+						}
+						p.sendMessage(ChatColor.GREEN + "Du bist nun wieder sichtbar.");
+					} else {
+						for (Player player : Bukkit.getOnlinePlayers()) {
+							if (!player.hasPermission(desc.getName() + ".vanish.see")) {
+								player.hidePlayer(p);
+							}
+						}
+						p.sendMessage(ChatColor.GREEN + "Du bist nun unsichtbar.");
+					}
 				}
 				
 				

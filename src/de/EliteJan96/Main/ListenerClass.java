@@ -45,11 +45,40 @@ public class ListenerClass extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		event.setJoinMessage(ChatColor.YELLOW + event.getPlayer().getName() + " ist dem Spiel beigetreten.");
+		PluginDescriptionFile desc = this.getDescription();
+		if (!event.getPlayer().hasPermission(desc.getName() + ".vanish.see")) {
+			for (String spieler : Main.vanish) {
+				Player target = Bukkit.getPlayer(spieler);
+				if (target != null) {
+					event.getPlayer().hidePlayer(target);
+				} else {
+					Main.vanish.remove(spieler);
+				}
+			}
+		}
 	}
 	
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent event) {
 		event.setQuitMessage(ChatColor.YELLOW + event.getPlayer().getName() + " hat das Spiel verlassen.");
+		PluginDescriptionFile desc = this.getDescription();
+		if (!event.getPlayer().hasPermission(desc.getName() + ".vanish.see")) {
+			for (String spieler : Main.vanish) {
+				Player target = Bukkit.getPlayer(spieler);
+				if (target != null) {
+					event.getPlayer().showPlayer(target);
+				} else {
+					Main.vanish.remove(spieler);
+				}
+			}
+		} else {
+			if (Main.vanish.contains(event.getPlayer().getName())) {
+				for (Player player : Bukkit.getOnlinePlayers()) {
+					player.showPlayer(event.getPlayer());
+				}
+				Main.vanish.remove(event.getPlayer().getName());
+			}
+		}
 	}
 	
 	@EventHandler
@@ -60,6 +89,23 @@ public class ListenerClass extends JavaPlugin implements Listener {
 			event.setCancelled(true);
 		}
 		event.setLeaveMessage(ChatColor.YELLOW + event.getPlayer().getName() + " hat das Spiel verlassen.");
+		if (!event.getPlayer().hasPermission(desc.getName() + ".vanish.see")) {
+			for (String spieler : Main.vanish) {
+				Player target = Bukkit.getPlayer(spieler);
+				if (target != null) {
+					event.getPlayer().showPlayer(target);
+				} else {
+					Main.vanish.remove(spieler);
+				}
+			}
+		} else {
+			if (Main.vanish.contains(event.getPlayer().getName())) {
+				for (Player player : Bukkit.getOnlinePlayers()) {
+					player.showPlayer(event.getPlayer());
+				}
+				Main.vanish.remove(event.getPlayer().getName());
+			}
+		}
 	}
 	
 	@EventHandler

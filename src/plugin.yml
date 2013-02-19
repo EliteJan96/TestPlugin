@@ -12,3 +12,7 @@ commands:
   team:
     description: Teamcommand
     usage: /<command>
+  vanish:
+    description: Macht dich (un)sichtbar
+    usage: /<command>
+    aliases: [v, unsichtbar, sichtbar]
