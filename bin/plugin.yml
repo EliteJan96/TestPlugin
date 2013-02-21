@@ -20,3 +20,7 @@ commands:
     description: MSG-Command
     usage: /<command <Spieler> <Nachricht>
     aliases: [tell, t, send, schreibe, nachricht]
+  r:
+    description: R-Command
+    usage: /<command> <Nachricht>
+    aliases: [reply, antwort, antworten, re]

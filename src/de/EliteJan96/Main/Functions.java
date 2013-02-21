@@ -3,6 +3,7 @@ package de.EliteJan96.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Functions extends JavaPlugin {
@@ -17,10 +18,14 @@ public class Functions extends JavaPlugin {
 		return string;
 	}
 	
-	public static boolean isOnline(String spieler) {
-		Player p = Bukkit.getPlayer(spieler);
-		if (p != null) {
-			return true;
+	public static boolean isOnline(String spieler, Player send, PluginDescriptionFile desc) {
+		Player rec = Bukkit.getPlayer(spieler);
+		if (rec != null) {
+			if (Main.vanish.contains(spieler) && !(send.hasPermission(desc.getName() + ".vanish.see"))) {
+				return false;
+			} else {
+				return true;
+			}
 		} else {
 			return false;
 		}

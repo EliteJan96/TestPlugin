@@ -1,6 +1,7 @@
 package de.EliteJan96.Main;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -20,6 +21,7 @@ public class Main extends JavaPlugin {
 
 	public static String noPerm = ChatColor.RED + "Du hast leider keine ausreichenden Rechte um diesen Befehl auszuführen.";
 	public static List<String> vanish = new ArrayList<String>();
+	public static HashMap<String, String> msg = new HashMap<String, String>();
 	
 	@Override
 	public void onEnable() {
@@ -174,8 +176,8 @@ public class Main extends JavaPlugin {
 						admin = admin + Functions.isOnlineTeam(pex.getGroup("Admin").getUsers()[i].getName()) + " " + ChatColor.DARK_AQUA + "| ";
 					}
 					p.sendMessage(ChatColor.GREEN + "[]" + ChatColor.GOLD + " --> " + ChatColor.DARK_AQUA + "Team" + ChatColor.GOLD + " <-- " + ChatColor.GREEN + "[]");
-					p.sendMessage(ChatColor.DARK_RED + "Owner: " + ChatColor.RESET + owner);
-					p.sendMessage(ChatColor.RED + "Admins: " + ChatColor.RESET + admin);
+					p.sendMessage(ChatColor.DARK_RED + "Owner: " + ChatColor.RESET + owner.substring(0, owner.length() - 2));
+					p.sendMessage(ChatColor.RED + "Admins: " + ChatColor.RESET + admin.substring(0, admin.length() - 2));
 				}
 				
 				if (cmd.getName().equalsIgnoreCase("vanish")) {
@@ -197,7 +199,7 @@ public class Main extends JavaPlugin {
 				}
 				
 				if (cmd.getName().equalsIgnoreCase("msg")) {
-					if (Functions.isOnline(args[0]) == true) {
+					if (Functions.isOnline(args[0], p, desc) == true) {
 						if (args.length > 2) {
 							PermissionManager pex = PermissionsEx.getPermissionManager();
 							if (pex.has(Bukkit.getPlayer(args[0]), desc.getName() + ".msg.admin") && !(pex.has(p, desc.getName() + ".msg.admin"))) {
@@ -216,6 +218,29 @@ public class Main extends JavaPlugin {
 						}
 					} else {
 						p.sendMessage(ChatColor.RED + "Der Spieler wurde nicht gefunden.");
+					}
+				}
+				
+				if (cmd.getName().equalsIgnoreCase("r")) {
+					if (msg.containsKey(p.getName())) {
+						if (Functions.isOnline(msg.get(p.getName()), p, desc)) {
+							PermissionManager pex = PermissionsEx.getPermissionManager();
+							if (pex.has(Bukkit.getPlayer(msg.get(p.getName())), desc.getName() + ".msg.admin") && !(pex.has(p, desc.getName() + ".msg.admin"))) {
+								p.sendMessage(ChatColor.DARK_RED + "Admins reagieren oft nicht auf MSGs. Bitte wende dich für Fragen an einen Supporter.");
+							}
+							StringBuilder sb = new StringBuilder();
+							for (int i = 0; i < args.length; i++) {
+								if (i != 0)
+									sb.append(' ');
+								sb.append(args[i]);
+							}
+							String nachricht = sb.toString();
+							Functions.sendMsg(p.getName(), msg.get(p.getName()), nachricht);
+						} else {
+							p.sendMessage(ChatColor.RED + "Der Spieler ist nicht mehr online.");
+						}
+					} else {
+						p.sendMessage(ChatColor.RED + "Du hast keinen, dem du antworten kannst.");
 					}
 				}
 				

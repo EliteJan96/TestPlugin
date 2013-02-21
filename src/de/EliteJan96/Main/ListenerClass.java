@@ -79,6 +79,9 @@ public class ListenerClass extends JavaPlugin implements Listener {
 				Main.vanish.remove(event.getPlayer().getName());
 			}
 		}
+		if (Main.msg.containsKey(event.getPlayer().getName())) {
+			Main.msg.remove(event.getPlayer().getName());
+		}
 	}
 	
 	@EventHandler
